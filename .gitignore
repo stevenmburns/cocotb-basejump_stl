@@ -1,0 +1,7 @@
+*~
+cocotb-env/
+verilator_latest/
+basejump_stl/
+cocotb-test/
+cocotb/
+verilator/
