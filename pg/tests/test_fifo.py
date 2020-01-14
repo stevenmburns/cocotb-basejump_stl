@@ -22,8 +22,22 @@ module fifo_test ( input logic clk,
 endmodule
 """)
 
+from fifo_cocotb import gen_undefined
+def test_gen_undefined():
+    assert gen_undefined(4) == 0xF
+    assert gen_undefined(8) == 0xEF
+    assert gen_undefined(12) == 0xEEF
+    assert gen_undefined(16) == 0xBEEF
+    assert gen_undefined(32) == 0xDEADBEEF
+    assert gen_undefined(33) == (0x1<<32) | 0xDEADBEEF
+    assert gen_undefined(34) == (0x3<<32) | 0xDEADBEEF
+    assert gen_undefined(35) == (0x7<<32) | 0xDEADBEEF
+    assert gen_undefined(36) == 0xFDEADBEEF
+
+
 @settings(deadline=300000,max_examples=20)
-@given(st.integers(min_value=7,max_value=64))
-def test_fifo( width_p):
-    gen_v( width_p, 128)
+@given(st.integers(min_value=1,max_value=7).map(lambda x: 1<<x))
+def test_fifo( els_p):
+    os.environ['els_p'] = f"{els_p}"
+    gen_v( 8, els_p)
     run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v","../fifo_test.v"], toplevel="fifo_test", module="fifo_cocotb", includes=["../../basejump_stl/bsg_misc","../../basejump_stl/bsg_mem"])

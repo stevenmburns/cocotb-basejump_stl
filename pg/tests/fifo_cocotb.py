@@ -4,9 +4,25 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge, FallingEdge
 from cocotb.regression import TestFactory
+from collections import deque
+
+import os
+
+def gen_undefined(w):
+    u = 0
+    for i in range(0,w,32):
+        m = (1<<min(w-i,32))-1
+        u |= (m&0xDEADBEEF) << i
+    return u
 
 @cocotb.coroutine
 def run_test(dut):
+
+    els_p = int(os.environ["els_p"])
+
+    print(els_p,dut.u0)
+    
+    n = els_p
 
     c = Clock(dut.clk, 1, 'ns')
     cocotb.fork(c.start())
@@ -30,28 +46,59 @@ def run_test(dut):
         if deq:
             assert dut.data_out == data_out, (int(dut.data_out), data_out)
 
-    u = 0xDEAD
+    w = len(dut.data)
+    u = gen_undefined(w)
 
+    r = random.Random( 47)
+
+#Reset
     yield stage( 1, u, False, False, 0, 1, u)
-    yield stage( 0, u, False, False, 0, 1, u)
-    yield stage( 0, u, False, False, 0, 1, u)
-    yield stage( 0, 10, True, False, 0, 0, u)
-    yield stage( 0, 11, True, False, 0, 0, u)
-    yield stage( 0, 12, True, False, 0, 0, u)
-    yield stage( 0, u, False, False, 0, 0, u)
-    yield stage( 0, u, False, False, 0, 0, u)
-    yield stage( 0, u, False, True, 0, 0, 10)
-    yield stage( 0, u, False, True, 0, 0, 11)
-    yield stage( 0, u, False, True, 0, 1, 12)
-    yield stage( 0, 99, True, False, 0, 0, u)
-    yield stage( 0, u, False, True, 0, 1, 99)
-    
-    n = 128
-    for i in range(n):
-        yield stage( 0, n+i, True, False, i == n-1, 0, 0)
 
-    for i in range(n):
-        yield stage( 0, 0, False, True, 0, i == n-1, n+i)
+    m = 1000
+
+
+    q = deque()
+
+    for i in range(m):
+        doit = r.uniform(0,1) < 0.8
+        enq_not_deq = r.uniform(0,1) < 0.45
+        if doit:
+            if enq_not_deq:
+                if len(q) < n:
+                    v = r.randrange( 1<<w)
+                    q.append(v)
+                    yield stage( 0, v, True, False, len(q) == n, len(q) == 0, u)
+            else:
+                if len(q) > 0:
+                    v = q.popleft()
+                    yield stage( 0, u, False, True, len(q) == n, len(q) == 0, v)
+            print( len(q), end=' ')
+    print()
+
+#Reset
+    yield stage( 1, u, False, False, 0, 1, u)
+
+    q = deque()
+
+# Fill the queue
+    for j in range(n):
+        v = r.randrange( 1<<w)
+        q.append(v)
+        yield stage( 0, v, True, False, len(q) == n, len(q) == 0, u)
+
+    for i in range(m):
+        doit = r.uniform(0,1) < 0.8
+        enq_not_deq = r.uniform(0,1) < 0.55
+        if doit:
+            if enq_not_deq and len(q) < n:
+                v = r.randrange( 1<<w)
+                q.append(v)
+                yield stage( 0, v, True, False, len(q) == n, len(q) == 0, u)
+            elif not enq_not_deq and len(q) > 0:
+                v = q.popleft()
+                yield stage( 0, u, False, True, len(q) == n, len(q) == 0, v)
+            print( len(q), end=' ')
+    print()
 
 # Register the test.
 factory = TestFactory(run_test)
