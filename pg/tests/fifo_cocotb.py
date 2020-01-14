@@ -46,11 +46,12 @@ def run_test(dut):
     yield stage( 0, 99, True, False, 0, 0, u)
     yield stage( 0, u, False, True, 0, 1, 99)
     
-    for i in range(128):
-        yield stage( 0, 128+i, True, False, i == 127, 0, 0)
+    n = 128
+    for i in range(n):
+        yield stage( 0, n+i, True, False, i == n-1, 0, 0)
 
-    for i in range(128):
-        yield stage( 0, 0, False, True, 0, i == 127, 128+i)
+    for i in range(n):
+        yield stage( 0, 0, False, True, 0, i == n-1, n+i)
 
 # Register the test.
 factory = TestFactory(run_test)

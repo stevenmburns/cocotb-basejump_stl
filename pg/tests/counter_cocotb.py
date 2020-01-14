@@ -34,20 +34,17 @@ def run_test(dut):
 #        print(bv.signed_integer)
 
         if v < 0:
-            assert dut.o == (v % (1<<w))
+            assert dut.o == v + (1<<w)
         else:
             assert dut.o == v
 
     yield stage( 1, 0, 0, 0)
     yield stage( 0, 0, 0, 0)
-    yield stage( 0, 1, 0, 1)
-    yield stage( 0, 0, 0, 1)
-    yield stage( 0, 1, 0, 2)
-    yield stage( 0, 1, 1, 2)
-    yield stage( 0, 0, 1, 1)
-    yield stage( 0, 0, 1, 0)
-    yield stage( 0, 0, 1, -1)
-    yield stage( 0, 1, 0, 0)
+    for i in range(1,1<<w):
+        yield stage( 0, 1, 0, i)
+    for i in range(1, 1<<w):
+        yield stage( 0, 0, 1, (1<<w)-1-i)
+        
 
 
 # Register the test.

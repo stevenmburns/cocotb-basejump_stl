@@ -1,6 +1,7 @@
 from cocotb_test.run import run
 import pytest
 import os
+from hypothesis import given, example, strategies as st, settings
 
 def gen_v( width_p, els_p):
 
@@ -21,7 +22,8 @@ module fifo_test ( input logic clk,
 endmodule
 """)
 
-@pytest.mark.parametrize("width_p,els_p", [(32,128)])
-def test_fifo( width_p, els_p):
-    gen_v( width_p, els_p)
+@settings(deadline=300000,max_examples=20)
+@given(st.integers(min_value=7,max_value=64))
+def test_fifo( width_p):
+    gen_v( width_p, 128)
     run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v","../fifo_test.v"], toplevel="fifo_test", module="fifo_cocotb", includes=["../../basejump_stl/bsg_misc","../../basejump_stl/bsg_mem"])

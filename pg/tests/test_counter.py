@@ -1,7 +1,7 @@
 from cocotb_test.run import run
 import pytest
 import os
-
+from hypothesis import given, example, strategies as st, settings
 
 def log2up( x):
     y = 1
@@ -32,7 +32,15 @@ module counter_test ( input logic clk, input logic reset, input logic [{h-1}:0] 
 endmodule
 """)
 
-@pytest.mark.parametrize("val", [2])
+@settings(deadline=300000,max_examples=20)
+@given(st.integers(min_value=2,max_value=8))
+@example(2)
+@example(3)
+@example(4)
+@example(5)
+@example(6)
+@example(7)
+@example(8)
 def test_counter(val):
     gen_v( val, 1)
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_misc/bsg_counter_up_down.v","counter_test.v"], toplevel="counter_test", module="counter_cocotb")
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_misc/bsg_counter_up_down.v","../counter_test.v"], toplevel="counter_test", module="counter_cocotb")
