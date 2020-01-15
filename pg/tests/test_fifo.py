@@ -36,8 +36,9 @@ def test_gen_undefined():
 
 
 @settings(deadline=300000,max_examples=20)
-@given(st.integers(min_value=1,max_value=7).map(lambda x: 1<<x))
+#@given(st.integers(min_value=1,max_value=4).map(lambda x: 1<<x))
+@given(st.integers(min_value=2,max_value=5))
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     gen_v( 8, els_p)
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v","../fifo_test.v"], toplevel="fifo_test", module="fifo_cocotb", includes=["../../basejump_stl/bsg_misc","../../basejump_stl/bsg_mem"])
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v","../fifo_test.v"], toplevel="fifo_test", module="fifo_cocotb", includes=["../../basejump_stl/bsg_misc","../../basejump_stl/bsg_mem"],extra_args=["-Wno-fatal"])

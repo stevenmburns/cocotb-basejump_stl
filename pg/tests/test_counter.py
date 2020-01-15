@@ -43,4 +43,4 @@ endmodule
 @example(8)
 def test_counter(val):
     gen_v( val, 1)
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_misc/bsg_counter_up_down.v","../counter_test.v"], toplevel="counter_test", module="counter_cocotb")
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_misc/bsg_counter_up_down.v","../counter_test.v"], toplevel="counter_test", module="counter_cocotb",extra_args=["-Wno-fatal"])

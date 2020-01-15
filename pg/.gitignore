@@ -1,5 +1,4 @@
 *~
 .hypothesis/
 sim_build/
-counter_test.v
-fifo_test.v
+*_test.v
