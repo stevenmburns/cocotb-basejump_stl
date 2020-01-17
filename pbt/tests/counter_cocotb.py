@@ -1,5 +1,3 @@
-import random
-
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge
@@ -14,7 +12,6 @@ def run_test(dut):
     print( dut.o, type(dut.o), len(dut.o))
 
     w = len(dut.o)
-    h = len(dut.up)
 
     @cocotb.coroutine
     def stage( reset, up, dn, v):

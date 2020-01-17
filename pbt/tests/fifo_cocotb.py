@@ -21,7 +21,7 @@ def run_test(dut):
     els_p = int(os.environ["els_p"])
 
     print(els_p,dut.u0)
-    
+
     n = els_p
 
     c = Clock(dut.clk, 1, 'ns')
@@ -58,7 +58,7 @@ def run_test(dut):
 
     q = deque()
 
-    for i in range(m):
+    for _ in range(m):
         doit = r.uniform(0,1) < 0.8
         enq_not_deq = r.uniform(0,1) < 0.45
         if doit:
@@ -85,7 +85,7 @@ def run_test(dut):
         q.append(v)
         yield stage( 0, v, True, False, len(q) == n, len(q) == 0, u)
 
-    for i in range(m):
+    for _ in range(m):
         doit = r.uniform(0,1) < 0.8
         enq_not_deq = r.uniform(0,1) < 0.55
         if doit:
@@ -98,6 +98,11 @@ def run_test(dut):
                 yield stage( 0, u, False, True, len(q) == n, len(q) == 0, v)
             print( len(q), end=' ')
     print()
+
+# Empty the queue
+    for _ in range(len(q)):
+        v = q.popleft(v)
+        yield stage( 0, u, False, True, len(q) == n, len(q) == 0, v)
 
 # Register the test.
 factory = TestFactory(run_test)

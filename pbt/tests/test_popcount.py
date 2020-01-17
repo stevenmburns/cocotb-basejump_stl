@@ -37,6 +37,7 @@ def test_popcount_gold():
 @settings(deadline=300000,max_examples=20)
 #@given(st.integers(min_value=1,max_value=4).map(lambda x: 1<<x))
 @given(st.integers(min_value=2,max_value=5))
+@example(2)
 def test_popcount( width_p):
     os.environ['width_p'] = f"{width_p}"
     output_width_p = log2up( width_p+1)
