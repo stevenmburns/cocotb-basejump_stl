@@ -1,5 +1,7 @@
 # Experiment integrating basejump_stl, cocotb, cocotb-test, and hypothesis
 
+[![CircleCI](https://circleci.com/gh/stevenmburns/cocotb-basejump_stl.svg?style=svg)](https://circleci.com/gh/stevenmburns/cocotb-basejump_stl)
+
 You'll need to install these other packages.
 ```bash
 python3 -m venv cocotb-env
