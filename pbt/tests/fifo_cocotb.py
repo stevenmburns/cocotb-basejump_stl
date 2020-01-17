@@ -38,7 +38,6 @@ def run_test(dut):
         dut.enq_not_deq = enq
 
         yield RisingEdge(dut.clk)
-#        yield FallingEdge(dut.clk)
         yield Timer(0)
 
         assert dut.full == full, (int(dut.full), full)
@@ -81,7 +80,7 @@ def run_test(dut):
     q = deque()
 
 # Fill the queue
-    for j in range(n):
+    for _ in range(n):
         v = r.randrange( 1<<w)
         q.append(v)
         yield stage( 0, v, True, False, len(q) == n, len(q) == 0, u)

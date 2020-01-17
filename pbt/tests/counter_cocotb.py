@@ -43,8 +43,6 @@ def run_test(dut):
         yield stage( 0, 1, 0, i)
     for i in range(1, 1<<w):
         yield stage( 0, 0, 1, (1<<w)-1-i)
-        
-
 
 # Register the test.
 factory = TestFactory(run_test)

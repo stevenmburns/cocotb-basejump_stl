@@ -1,5 +1,4 @@
 from cocotb_test.run import run
-import os
 from hypothesis import given, example, strategies as st, settings
 
 def log2up( x):

@@ -1,5 +1,4 @@
 from cocotb_test.run import run
-import os
 
 def test_abs_verilog():
     run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",

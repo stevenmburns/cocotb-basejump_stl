@@ -1,7 +1,6 @@
 import random
 
 import cocotb
-from cocotb.clock import Clock
 from cocotb.triggers import Timer
 from cocotb.regression import TestFactory
 
@@ -20,7 +19,7 @@ def run_test(dut):
 
         dut.i = i
 
-        yield Timer(10)
+        yield Timer(1.0, 'ns')
 
         assert int(dut.o) == o, (int(dut.o), o)
 
