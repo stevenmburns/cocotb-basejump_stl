@@ -41,4 +41,11 @@ def test_popcount( width_p):
     os.environ['width_p'] = f"{width_p}"
     output_width_p = log2up( width_p+1)
     gen_v( width_p, output_width_p)
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_misc/bsg_popcount.v","../popcount_test.v"], toplevel="popcount_test", module="popcount_cocotb", includes=["../../basejump_stl/bsg_misc"],extra_args=["-Wno-fatal"])
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
+                         "../../basejump_stl/bsg_misc/bsg_popcount.v",
+                         "../popcount_test.v"],
+        toplevel="popcount_test",
+        module="popcount_cocotb",
+        includes=["../../basejump_stl/bsg_misc"],
+        extra_args=["-Wno-fatal"]
+    )

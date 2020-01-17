@@ -2,7 +2,7 @@ import random
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import Timer, RisingEdge, FallingEdge
+from cocotb.triggers import Timer, RisingEdge
 from cocotb.regression import TestFactory
 
 @cocotb.coroutine
@@ -25,7 +25,6 @@ def run_test(dut):
         print( f"inps (b): {dut.reset} ({reset}) {dut.up} ({up}) {dut.dn} ({dn})")
         yield RisingEdge(dut.clk)
         print( f"inps (a): {dut.reset} ({reset}) {dut.up} ({up}) {dut.dn} ({dn})")
-#        yield FallingEdge(dut.clk)
         yield Timer(0)
         print( f"outs: {dut.o} ({v})")
 

@@ -40,4 +40,11 @@ def test_gen_undefined():
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     gen_v( 8, els_p)
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v","../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v","../fifo_test.v"], toplevel="fifo_test", module="fifo_cocotb", includes=["../../basejump_stl/bsg_misc","../../basejump_stl/bsg_mem"],extra_args=["-Wno-fatal"])
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
+                         "../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v",
+                         "../fifo_test.v"],
+        toplevel="fifo_test",
+        module="fifo_cocotb",
+        includes=["../../basejump_stl/bsg_misc",
+                  "../../basejump_stl/bsg_mem"],
+        extra_args=["-Wno-fatal"])
