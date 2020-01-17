@@ -32,3 +32,10 @@ To run, then try:
 ```bash
 SIM=verilator pytest
 ```
+## Or with docker
+
+```bash
+docker build . -t cocotb_image
+
+docker run -it cocotb_image bash -c "source /opt/venv/bin/activate && cd /pbt && SIM=verilator pytest"
+```
