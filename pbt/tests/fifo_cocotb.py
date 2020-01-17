@@ -101,7 +101,7 @@ def run_test(dut):
 
 # Empty the queue
     for _ in range(len(q)):
-        v = q.popleft(v)
+        v = q.popleft()
         yield stage( 0, u, False, True, len(q) == n, len(q) == 0, v)
 
 # Register the test.
