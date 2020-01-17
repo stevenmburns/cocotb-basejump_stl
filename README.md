@@ -1,6 +1,7 @@
 # Experiment integrating basejump_stl, cocotb, cocotb-test, and hypothesis
 
 [![CircleCI](https://circleci.com/gh/stevenmburns/cocotb-basejump_stl.svg?style=svg)](https://circleci.com/gh/stevenmburns/cocotb-basejump_stl)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a05d3b1dcd264ff4adb4da7b3bdabb64)](https://www.codacy.com/manual/stevenmburns/cocotb-basejump_stl?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=stevenmburns/cocotb-basejump_stl&amp;utm_campaign=Badge_Grade)
 
 You'll need to install these other packages.
 ```bash
