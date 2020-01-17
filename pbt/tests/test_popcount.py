@@ -1,5 +1,4 @@
 from cocotb_test.run import run
-import pytest
 import os
 from hypothesis import given, example, strategies as st, settings
 
