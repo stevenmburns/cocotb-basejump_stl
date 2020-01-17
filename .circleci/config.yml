@@ -67,7 +67,7 @@ workflows:
   full:
     jobs:
       - start
-      - build-all
+      - build-all:
           requires:
             - start
       - finish:
