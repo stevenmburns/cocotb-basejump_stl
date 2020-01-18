@@ -8,7 +8,7 @@ def run_test(dut):
 
     @cocotb.coroutine
     def stage( i, o):
-        dut.a = i
+        dut.a_i = i
         yield Timer(1, units='ns')
         assert dut.o == o
 
