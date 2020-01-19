@@ -2,4 +2,3 @@
 .coverage
 .hypothesis/
 sim_build/
-*_test.v
