@@ -25,7 +25,7 @@ def run_test(dut):
 
     m = 1000
 
-    for i in range(m):
+    for _ in range(m):
         v = r.randrange( 1<<width_p)
         yield stage( v, popcount( width_p, v))
 
