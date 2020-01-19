@@ -6,33 +6,24 @@ from cocotb.regression import TestFactory
 @cocotb.coroutine
 def run_test(dut):
 
-    c = Clock(dut.clk, 1, 'ns')
+    c = Clock(dut.clk_i, 1, 'ns')
     cocotb.fork(c.start())
 
-    print( dut.o, type(dut.o), len(dut.o))
-
-    w = len(dut.o)
+    w = len(dut.count_o)
 
     @cocotb.coroutine
     def stage( reset, up, dn, v):
-        dut.reset = reset
-        dut.up = up
-        dut.dn = dn
-        yield Timer(0)
-        print( f"inps (b): {dut.reset} ({reset}) {dut.up} ({up}) {dut.dn} ({dn})")
-        yield RisingEdge(dut.clk)
-        print( f"inps (a): {dut.reset} ({reset}) {dut.up} ({up}) {dut.dn} ({dn})")
-        yield Timer(0)
-        print( f"outs: {dut.o} ({v})")
+        dut.reset_i = reset
+        dut.up_i = up
+        dut.down_i = dn
 
-        bv = cocotb.binary.BinaryValue( binaryRepresentation=cocotb.binary.BinaryRepresentation.SIGNED_MAGNITUDE)
-        bv.assign( dut.o)
-#        print(bv.signed_integer)
+        yield RisingEdge(dut.clk_i)
+        yield Timer(0)
 
         if v < 0:
-            assert dut.o == v + (1<<w)
+            assert dut.count_o == v + (1<<w)
         else:
-            assert dut.o == v
+            assert dut.count_o == v
 
     yield stage( 1, 0, 0, 0)
     yield stage( 0, 0, 0, 0)
