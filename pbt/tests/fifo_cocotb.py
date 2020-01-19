@@ -20,29 +20,32 @@ def run_test(dut):
 
     els_p = int(os.environ["els_p"])
 
+    print(els_p,dut.u0)
+
     n = els_p
 
-    c = Clock(dut.clk_i, 1, 'ns')
+    c = Clock(dut.clk, 1, 'ns')
     cocotb.fork(c.start())
 
     @cocotb.coroutine
     def stage( reset, data, enq, deq, full, empty, data_out):
         assert not enq or not deq
 
-        dut.reset_i = reset
-        dut.data_i = data
-        dut.v_i = enq or deq
-        dut.enq_not_deq_i = enq
 
-        yield RisingEdge(dut.clk_i)
+        dut.reset = reset
+        dut.data = data
+        dut.v = enq or deq
+        dut.enq_not_deq = enq
+
+        yield RisingEdge(dut.clk)
         yield Timer(0)
 
-        assert dut.full_o == full, (int(dut.full_o), full)
-        assert dut.empty_o == empty, (int(dut.empty_o), empty)
+        assert dut.full == full, (int(dut.full), full)
+        assert dut.empty == empty, (int(dut.empty), empty)
         if deq:
-            assert dut.data_o == data_out, (int(dut.data_o), data_out)
+            assert dut.data_out == data_out, (int(dut.data_out), data_out)
 
-    w = len(dut.data_i)
+    w = len(dut.data)
     u = gen_undefined(w)
 
     r = random.Random( 47)
