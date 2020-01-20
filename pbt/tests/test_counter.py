@@ -5,6 +5,7 @@ from hypothesis import given, example, strategies as st, settings
 @pytest.mark.skipif( True, reason="Currently failing: No root handle found")
 @settings(deadline=300000,max_examples=20)
 @given(st.integers(min_value=2,max_value=8))
+@example(2)
 def test_counter(val):
     max_val_p = val
     max_step_p = 1

@@ -18,6 +18,7 @@ def test_gen_undefined():
 @settings(deadline=300000,max_examples=20)
 #@given(st.integers(min_value=1,max_value=4).map(lambda x: 1<<x))
 @given(st.integers(min_value=2,max_value=5))
+@example(2)
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     width_p = 8
