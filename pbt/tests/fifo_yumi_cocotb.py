@@ -7,13 +7,7 @@ from cocotb.regression import TestFactory
 from collections import deque
 
 import os
-
-def gen_undefined(w):
-    u = 0
-    for i in range(0,w,32):
-        m = (1<<min(w-i,32))-1
-        u |= (m&0xDEADBEEF) << i
-    return u
+from bsg_util import gen_undefined
 
 @cocotb.coroutine
 def run_test(dut):
@@ -103,15 +97,9 @@ def run_test(dut):
     else:
       q = deque()
 
-      pending_i = False
-      pending_o = False
-
       for _ in range(1000):
-        pending_i = False
-        pending_o = False
-
-        p_v = pending_i or r.uniform(0,1) < 0.8
-        p_y = pending_o or r.uniform(0,1) < 0.9
+        p_v = r.uniform(0,1) < 0.8
+        p_y = r.uniform(0,1) < 0.9
 
         if p_v:
             dut.v_i = 1
@@ -127,20 +115,14 @@ def run_test(dut):
         if p_y:
             if dut.v_o == 1:
                 dut.yumi_i = 1
-                pending_o = False
                 val_o = q.popleft()
                 print(f"Pop should be {val_o} was {int(dut.data_o)}")
                 assert val_o == dut.data_o, (val_o, int(dut.data_o))
-            else:
-                pending_o = True
 
         if p_v:
             if dut.ready_o ==  1:
                 print(f"Push {val}")
                 q.append( val)
-                pending_i = False
-            else:
-                pending_i = True
 
         yield Timer(0.1, 'ns')
 
