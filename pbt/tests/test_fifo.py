@@ -9,12 +9,11 @@ from hypothesis import given, example, strategies as st, settings
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     width_p = 8
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
-                         "../../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v"],
+    run(verilog_sources=["../basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v"],
         toplevel="bsg_fifo_1rw_large",
         module="fifo_cocotb",
-        includes=["../../basejump_stl/bsg_misc",
-                  "../../basejump_stl/bsg_mem"],
+        includes=["../basejump_stl/bsg_misc",
+                  "../basejump_stl/bsg_mem"],
         extra_args=["-Wno-fatal",
                     f"-pvalue+els_p={els_p}",
                     f"-pvalue+width_p={width_p}"]

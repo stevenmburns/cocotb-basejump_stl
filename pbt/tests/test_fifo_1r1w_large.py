@@ -6,13 +6,13 @@ from hypothesis import given, example, strategies as st, settings
 @example(2)
 def test_fifo( els_p):
     width_p = 8
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
-                         "../../basejump_stl/bsg_dataflow/bsg_fifo_1r1w_large.v"],
+    run(verilog_sources=["../basejump_stl/bsg_misc/bsg_defines.v",
+                         "../basejump_stl/bsg_dataflow/bsg_fifo_1r1w_large.v"],
         toplevel="bsg_fifo_1r1w_large",
         module="fifo_yumi_cocotb",
-        includes=["../../basejump_stl/bsg_misc",
-                  "../../basejump_stl/bsg_mem",
-                  "../../basejump_stl/bsg_dataflow"],
+        includes=["../basejump_stl/bsg_misc",
+                  "../basejump_stl/bsg_mem",
+                  "../basejump_stl/bsg_dataflow"],
         extra_args=["-Wno-fatal",
                     f"-pvalue+els_p={els_p}",
                     f"-pvalue+width_p={width_p}",

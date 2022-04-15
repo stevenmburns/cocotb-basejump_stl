@@ -6,8 +6,8 @@ from hypothesis import given, example, strategies as st, settings
 @example(8)
 
 def test_abs_verilog(width_p):
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
-                         "../../basejump_stl/bsg_misc/bsg_abs.v"],
+    run(verilog_sources=["../basejump_stl/bsg_misc/bsg_abs.v"],
+        includes=["../basejump_stl/bsg_misc"],
         toplevel="bsg_abs",
         module="abs_cocotb",
         extra_args=["-Wno-fatal", f"-pvalue+width_p={width_p}"]

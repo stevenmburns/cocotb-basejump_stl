@@ -10,8 +10,8 @@ def test_counter(val):
     max_val_p = val
     max_step_p = 1
     init_val_p = 0
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_defines.v",
-                         "../../basejump_stl/bsg_misc/bsg_counter_up_down.v"],
+    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_counter_up_down.v"],
+        includes=["../../basejump_stl/bsg_misc"],
         toplevel="bsg_counter_up_down",
         module="counter_cocotb",
         extra_args=["-Wno-fatal",
