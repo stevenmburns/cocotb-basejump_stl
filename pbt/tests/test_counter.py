@@ -2,6 +2,10 @@ import pytest
 from cocotb_test.run import run
 from hypothesis import given, example, strategies as st, settings
 
+import pathlib
+
+rootdir = pathlib.Path(__file__).parent.parent.parent
+
 @pytest.mark.skipif( True, reason="Currently failing: No root handle found")
 @settings(deadline=300000,max_examples=20)
 @given(st.integers(min_value=2,max_value=8))
@@ -10,8 +14,8 @@ def test_counter(val):
     max_val_p = val
     max_step_p = 1
     init_val_p = 0
-    run(verilog_sources=["../../basejump_stl/bsg_misc/bsg_counter_up_down.v"],
-        includes=["../../basejump_stl/bsg_misc"],
+    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_misc/bsg_counter_up_down.v")],
+        includes=[str(rootdir / "basejump_stl/bsg_misc")],
         toplevel="bsg_counter_up_down",
         module="counter_cocotb",
         extra_args=["-Wno-fatal",
