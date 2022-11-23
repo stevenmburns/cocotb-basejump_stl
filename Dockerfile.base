@@ -30,5 +30,7 @@ RUN python3 -m venv $venv
 
 RUN bash -c "source $venv/bin/activate && pip install --upgrade pip && pip install wheel pytest pytest-timeout hypothesis"
 
-RUN bash -c "git clone https://github.com/verilator/verilator.git && cd verilator && autoconf && ./configure  && make -j 8 && make test && make install"
+RUN bash -c "git clone https://github.com/verilator/verilator.git && git checkout v4.106 && cd verilator && autoconf && ./configure  && make -j 8 && make test && make install"
+
+RUN bash -c "git clone https://github.com/steveicarus/iverilog.git && cd iverilog && autoconf && ./configure  && make -j 8 && make install"
 

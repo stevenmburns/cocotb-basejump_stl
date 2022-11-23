@@ -5,8 +5,8 @@
 
 You'll need to install these other packages.
 ```bash
-python3 -m venv cocotb-env
-source cocotb-env/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 
 pip install --upgrade pip
 pip install wheel
@@ -22,6 +22,7 @@ git clone https://github.com/themperek/cocotb-test.git
 (cd cocotb-test; pip install -e .)
 
 git clone https://github.com/verilator/verilator.git
+git checkout v4.106
 mkdir verilator_install
 cd verilator
 autoconf
@@ -31,11 +32,24 @@ make install
 ```
 Add `verilator_install/bin` to your PATH.
 
+git clone https://github.com/steveicarus/iverilog.git
+mkdir iverilog_install
+cd iverilog
+autoconf
+./configure --prefix=`realpath ../iverilog_install`
+make -j 8
+make install
+```
+Add `iverilog_install/bin` to your PATH.
+
 To run, then try:
 ```bash
+cd pbt/tests
 SIM=verilator pytest
+SIM=icarus pytest
 ```
-## Or with docker
+
+## Docker
 
 ```bash
 docker build . -t cocotb_image

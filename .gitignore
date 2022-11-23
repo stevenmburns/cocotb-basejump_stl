@@ -1,7 +1,10 @@
 *~
-cocotb-env/
-verilator_latest/
+.venv/
 basejump_stl/
 cocotb-test/
 cocotb/
 verilator/
+verilator_install/
+iverilog/
+iverilog_install/
+__pycache__/
