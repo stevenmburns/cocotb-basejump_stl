@@ -45,7 +45,7 @@ Add `iverilog_install/bin` to your PATH.
 
 To run, then try:
 ```bash
-cd pbt/tests
+cd pbt
 cocotb-clean
 SIM=verilator pytest -vv
 ```
