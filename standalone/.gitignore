@@ -4,3 +4,7 @@ __pycache__/
 sim_build/
 verdiLog
 *~
+htmlcov/
+junit.xml
+coverage.xml
+.coverage
