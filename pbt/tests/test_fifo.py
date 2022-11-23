@@ -3,6 +3,7 @@ import os
 from hypothesis import given, example, strategies as st, settings
 import pathlib
 
+testdir = pathlib.Path(__file__).parent
 rootdir = pathlib.Path(__file__).parent.parent.parent
 
 @settings(deadline=300000,max_examples=20)
@@ -12,8 +13,9 @@ rootdir = pathlib.Path(__file__).parent.parent.parent
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     width_p = 8
-    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v")],
-        toplevel="bsg_fifo_1rw_large",
+    run(verilog_sources=[str(testdir / "fifo_toplevel.v"),
+                         str(rootdir / "basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v")],
+        toplevel="fifo_toplevel",
         module="fifo_cocotb",
         includes=[str(rootdir / "basejump_stl/bsg_misc"),
                   str(rootdir / "basejump_stl/bsg_mem")],

@@ -4,6 +4,7 @@ from hypothesis import given, example, strategies as st, settings
 
 import pathlib
 
+testdir = pathlib.Path(__file__).parent
 rootdir = pathlib.Path(__file__).parent.parent.parent
 
 @pytest.mark.skipif( True, reason="Currently failing: No root handle found")
