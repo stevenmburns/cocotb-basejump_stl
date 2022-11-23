@@ -33,17 +33,17 @@ jobs:
       - run: |
           docker build -t cocotb_image .
 
-          docker run --name pbt_container cocotb_image bash -c "source /opt/venv/bin/activate && cd /pbt && SIM=verilator coverage run --source=tests -m pytest && coverage html && coverage xml && coverage-badge -o htmlcov/coverage.svg && mkdir -p /test-reports/pbt && cp /pbt/junit.xml /test-reports/pbt && mkdir -p /coverage-reports/pbt && cp -r /pbt/coverage.xml /pbt/htmlcov /coverage-reports/pbt"
+          docker run --name standalone_container cocotb_image bash -c "source /opt/venv/bin/activate && cd /standalone && SIM=verilator coverage run --source=tests -m pytest && coverage html && coverage xml && coverage-badge -o htmlcov/coverage.svg && mkdir -p /test-reports/standalone && cp /standalone/junit.xml /test-reports/standalone && mkdir -p /coverage-reports/standalone && cp -r /standalone/coverage.xml /standalone/htmlcov /coverage-reports/standalone"
 
-          docker cp pbt_container:coverage-reports .
-          docker cp pbt_container:test-reports .
-          docker rm pbt_container
+          docker cp standalone_container:coverage-reports .
+          docker cp standalone_container:test-reports .
+          docker rm standalone_container
 
       - persist_to_workspace:
           root: /work/workspace
           paths:
-            - test-reports/pbt
-            - coverage-reports/pbt
+            - test-reports/standalone
+            - coverage-reports/standalone
 
   finish:
     executor: git-executor
