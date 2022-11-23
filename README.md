@@ -14,7 +14,6 @@ pip install pytest
 pip install hypothesis
 
 git clone https://github.com/bespoke-silicon-group/basejump_stl.git
-(cd basejump_stl; git checkout dfc54ccbf7e3b9ffe84c6d5e446c08041bf6db7a)
 
 git clone https://github.com/cocotb/cocotb
 (cd cocotb; pip install -e .)
