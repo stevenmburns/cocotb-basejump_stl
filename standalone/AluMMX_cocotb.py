@@ -24,8 +24,8 @@ async def test_AluMMX_simple(dut):
     dut.b_2.value = 1
     dut.b_3.value = 0
 
-    dut.mode = 1
-    dut.opcode = 0
+    dut.mode.value = 1
+    dut.opcode.value = 0
 
     await FallingEdge(dut.clock)
     assert dut.z_0.value == 3, f"output z_0 incorrect"
@@ -42,8 +42,8 @@ async def test_AluMMX_simple(dut):
     dut.b_2.value = 1
     dut.b_3.value = 0
 
-    dut.mode = 1
-    dut.opcode = 1
+    dut.mode.value = 1
+    dut.opcode.value = 1
 
     await FallingEdge(dut.clock)
     assert dut.z_0.value == (1<<16) - 3, f"output z_0 incorrect"
