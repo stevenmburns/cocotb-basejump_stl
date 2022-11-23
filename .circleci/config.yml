@@ -39,11 +39,19 @@ jobs:
           docker cp standalone_container:test-reports .
           docker rm standalone_container
 
+          docker run --name pbt_container cocotb_image bash -c "source /opt/venv/bin/activate && cd /pbt && SIM=verilator coverage run --source=tests -m pytest && coverage html && coverage xml && coverage-badge -o htmlcov/coverage.svg && mkdir -p /test-reports/pbt && cp /pbt/junit.xml /test-reports/pbt && mkdir -p /coverage-reports/pbt && cp -r /pbt/coverage.xml /pbt/htmlcov /coverage-reports/pbt"
+
+          docker cp pbt_container:coverage-reports .
+          docker cp pbt_container:test-reports .
+          docker rm pbt_container
+
       - persist_to_workspace:
           root: /work/workspace
           paths:
             - test-reports/standalone
             - coverage-reports/standalone
+            - test-reports/pbt
+            - coverage-reports/pbt
 
   finish:
     executor: git-executor
