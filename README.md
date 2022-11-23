@@ -33,6 +33,7 @@ make install
 ```
 Add `verilator_install/bin` to your PATH.
 
+```bash
 git clone https://github.com/steveicarus/iverilog.git
 mkdir iverilog_install
 cd iverilog
