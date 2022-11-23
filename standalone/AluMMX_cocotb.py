@@ -15,39 +15,15 @@ async def test_AluMMX_simple(dut):
 
     await FallingEdge(dut.clock)  # Synchronize with the clock
 
-    dut.a_0.value = 0
-    dut.a_1.value = 1
-    dut.a_2.value = 2
-    dut.a_3.value = 3
-    dut.b_0.value = 3
-    dut.b_1.value = 2
-    dut.b_2.value = 1
-    dut.b_3.value = 0
+    async def set_and_check(mode, opcode, a, b, z):
+        dut.mode.value = mode
+        dut.opcode.value = opcode
+        dut.a_0.value, dut.a_1.value, dut.a_2.value, dut.a_3_value = a
+        dut.b_0.value, dut.b_1.value, dut.b_2.value, dut.b_3_value = b
+        await FallingEdge(dut.clock)
+        assert (dut.z_0.value, dut.z_1.value, dut.z_2.value, dut.z_3.value) == z
 
-    dut.mode.value = 1
-    dut.opcode.value = 0
 
-    await FallingEdge(dut.clock)
-    assert dut.z_0.value == 3, f"output z_0 incorrect"
-    assert dut.z_1.value == 3, f"output z_1 incorrect"
-    assert dut.z_2.value == 3, f"output z_2 incorrect"
-    assert dut.z_3.value == 3, f"output z_3 incorrect"
-
-    dut.a_0.value = 0
-    dut.a_1.value = 1
-    dut.a_2.value = 2
-    dut.a_3.value = 3
-    dut.b_0.value = 3
-    dut.b_1.value = 2
-    dut.b_2.value = 1
-    dut.b_3.value = 0
-
-    dut.mode.value = 1
-    dut.opcode.value = 1
-
-    await FallingEdge(dut.clock)
-    assert dut.z_0.value == (1<<16) - 3, f"output z_0 incorrect"
-    assert dut.z_1.value == (1<<16) - 1, f"output z_1 incorrect"
-    assert dut.z_2.value == 1, f"output z_2 incorrect"
-    assert dut.z_3.value == 3, f"output z_3 incorrect"
-    
+    m = 1<<16
+    set_and_check( 1, 0, (0,1,2,3), (3,2,1,0), (3,3,3,3))
+    set_and_check( 1, 1, (0,1,2,3), (3,2,1,0), (m-3,m-1,1,3))

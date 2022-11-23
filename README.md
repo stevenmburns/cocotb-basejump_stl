@@ -65,7 +65,7 @@ SIM=icarus pytest -vv -k AluMMX
 ## Docker
 
 ```bash
-docker build . -f Dockerfile.base -t cocotb_image_base
+docker build . -f Dockerfile.base -t cocotb_base
 
 docker build . -t cocotb_image
 
