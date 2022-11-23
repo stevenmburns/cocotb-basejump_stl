@@ -14,6 +14,7 @@ pip install pytest
 pip install hypothesis
 
 git clone https://github.com/bespoke-silicon-group/basejump_stl.git
+(cd basejump_stl; git checkout dfc54ccbf7e3b9ffe84c6d5e446c08041bf6db7a)
 
 git clone https://github.com/cocotb/cocotb
 (cd cocotb; pip install -e .)
@@ -45,13 +46,27 @@ Add `iverilog_install/bin` to your PATH.
 To run, then try:
 ```bash
 cd pbt/tests
-SIM=verilator pytest
-SIM=icarus pytest
+cocotb-clean
+SIM=verilator pytest -vv
 ```
+
+## Standalone tests (just using cocotb-test)
+```bash
+cd standalone
+cocotb-clean
+SIM=verilator pytest -vv
+cocotb-clean
+SIM=icarus pytest -vv -k dff
+cocotb-clean
+SIM=icarus pytest -vv -k AluMMX
+```
+
 
 ## Docker
 
 ```bash
+docker build . -f Dockerfile.base -t cocotb_image_base
+
 docker build . -t cocotb_image
 
 docker run -it cocotb_image bash -c "source /opt/venv/bin/activate && cd /pbt && SIM=verilator pytest"
