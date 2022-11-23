@@ -1,4 +1,4 @@
-FROM cocotb_base as stevenmburns/cocotb_image:nov2022
+FROM stevenmburns/cocotb_base:nov2022 as cocotb_image
 
 # Environment variable venv is set in cocotb_base
 
