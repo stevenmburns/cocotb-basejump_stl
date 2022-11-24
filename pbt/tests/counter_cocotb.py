@@ -1,7 +1,6 @@
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge
-from cocotb.regression import TestFactory
 
 @cocotb.coroutine
 def run_test(dut):
