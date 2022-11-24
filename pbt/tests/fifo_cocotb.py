@@ -2,7 +2,7 @@ import random
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import Timer, RisingEdge
+from cocotb.triggers import Timer, FallingEdge
 from collections import deque
 
 import os
@@ -24,6 +24,8 @@ async def run_test(dut):
     c = Clock(dut.clk_i, 1, 'ns')
     cocotb.start_soon(c.start())
 
+    await FallingEdge(dut.clk_i)
+
     async def stage( reset, data, enq, deq, full, empty, data_out):
         assert not enq or not deq
 
@@ -32,8 +34,7 @@ async def run_test(dut):
         dut.v_i.value = enq or deq
         dut.enq_not_deq_i.value = enq
 
-        await RisingEdge(dut.clk_i)
-        await Timer(0)
+        await FallingEdge(dut.clk_i)
 
         assert dut.full_o.value == full, (int(dut.full_o), full)
         assert dut.empty_o.value == empty, (int(dut.empty_o), empty)

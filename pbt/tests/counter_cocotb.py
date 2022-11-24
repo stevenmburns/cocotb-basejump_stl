@@ -1,12 +1,14 @@
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import Timer, RisingEdge
+from cocotb.triggers import FallingEdge
 
 @cocotb.test()
 async def run_test(dut):
 
     c = Clock(dut.clk_i, 1, 'ns')
     cocotb.start_soon(c.start())
+
+    await FallingEdge(dut.clk_i)
 
     w = len(dut.count_o.value)
 
@@ -15,8 +17,7 @@ async def run_test(dut):
         dut.up_i.value = up
         dut.down_i.value = dn
 
-        await RisingEdge(dut.clk_i)
-        await Timer(0)
+        await FallingEdge(dut.clk_i)
 
         if v < 0:
             assert dut.count_o.value == v + (1<<w)
