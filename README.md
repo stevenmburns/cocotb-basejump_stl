@@ -61,7 +61,6 @@ cocotb-clean
 SIM=icarus pytest -vv -k AluMMX
 ```
 
-
 ## Docker
 
 ```bash

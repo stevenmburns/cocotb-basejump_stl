@@ -2,7 +2,6 @@ import random
 
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.regression import TestFactory
 
 def popcount( n, x):
     return sum( 1 for i in range(n) if x & (1<<i))

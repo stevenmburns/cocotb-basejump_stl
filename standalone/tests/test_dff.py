@@ -8,7 +8,3 @@ def test_dff_verilog():
         toplevel="dff_test",
         module="dff_cocotb",
         waves=True)
-
-
-
-    

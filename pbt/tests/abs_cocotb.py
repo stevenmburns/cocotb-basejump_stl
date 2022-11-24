@@ -1,7 +1,6 @@
 
 import cocotb
 from cocotb.triggers import Timer
-from cocotb.regression import TestFactory
 
 @cocotb.test()
 async def run_test(dut):

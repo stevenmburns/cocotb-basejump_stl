@@ -3,7 +3,6 @@ import random
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge
-from cocotb.regression import TestFactory
 from collections import deque
 
 from bsg_util import gen_undefined
@@ -18,7 +17,7 @@ async def run_test(dut):
     u = gen_undefined(w)
     r = random.Random( 47)
 
-#Reset  
+#Reset
     dut.reset_i.value = 1
     dut.v_i.value = 0
     dut.yumi_i.value = 0
