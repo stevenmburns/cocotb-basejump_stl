@@ -2,7 +2,7 @@ import random
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import Timer, RisingEdge
+from cocotb.triggers import Timer, FallingEdge
 from collections import deque
 
 from bsg_util import gen_undefined
@@ -12,6 +12,7 @@ async def run_test(dut):
 
     c = Clock(dut.clk_i, 1, 'ns')
     cocotb.start_soon(c.start())
+    await FallingEdge(dut.clk_i)
 
     w = len(dut.data_i)
     u = gen_undefined(w)
@@ -21,15 +22,12 @@ async def run_test(dut):
     dut.reset_i.value = 1
     dut.v_i.value = 0
     dut.yumi_i.value = 0
-    await RisingEdge(dut.clk_i)
-    await Timer(0.1, 'ns')
+    await FallingEdge(dut.clk_i)
 
-    await RisingEdge(dut.clk_i)
-    await Timer(0.1, 'ns')
+    await FallingEdge(dut.clk_i)
 
     dut.reset_i.value = 0
-    await RisingEdge(dut.clk_i)
-    await Timer(0.1, 'ns')
+    await FallingEdge(dut.clk_i)
 
     q = deque()
 
@@ -45,26 +43,27 @@ async def run_test(dut):
             dut.v_i.value = 0
             dut.data_i.value = u
 
-        await Timer(0.1, 'ns')
+        # Are these delta cycles needed ?
+        #await Timer(0.1, 'ns')
 
         dut.yumi_i.value = 0
         if p_y:
             if dut.v_o.value == 1:
                 dut.yumi_i.value = 1
                 val_o = q.popleft()
-                print(f"Pop should be {val_o} was {int(dut.data_o.value)}")
-                assert val_o == dut.data_o.value, (val_o, int(dut.data_o))
+                print(f"Pop should be {val_o} was {dut.data_o.value}")
+                assert val_o == dut.data_o.value, (val_o, dut.data_o.value)
 
         if p_v:
             if dut.ready_o.value ==  1:
                 print(f"Push {val}")
                 q.append( val)
 
-        await Timer(0.1, 'ns')
+        # Are these delta cycles needed ?
+        #await Timer(0.1, 'ns')
 
-        print( f"B: ({int(dut.v_i.value)} {int(dut.data_i.value)} {int(dut.ready_o.value)}) ({int(dut.v_o.value)} {int(dut.data_o.value)} {int(dut.yumi_i.value)}) {q}")
+        print( f"B: ({dut.v_i.value} {dut.data_i.value} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value} {dut.yumi_i.value}) {q}")
 
-        await RisingEdge(dut.clk_i)
-        await Timer(0.1, 'ns')
+        await FallingEdge(dut.clk_i)
 
-        print( f"A: ({int(dut.v_i.value)} {int(dut.data_i.value)} {int(dut.ready_o.value)}) ({int(dut.v_o.value)} {int(dut.data_o.value)} {int(dut.yumi_i.value)}) {q}")
+        print( f"A: ({dut.v_i.value} {dut.data_i.value} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value} {dut.yumi_i.value}) {q}")
