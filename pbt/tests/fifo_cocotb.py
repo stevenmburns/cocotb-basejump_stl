@@ -17,7 +17,12 @@ def gen_undefined(w):
 @cocotb.test()
 async def run_test(dut):
 
+
+    #log.info(s'els_p={dut.els_p}')
+
     els_p = int(os.environ["els_p"])
+
+    dut._log.info(f'SMB: {dut.__dict__}')
 
     n = els_p
 
