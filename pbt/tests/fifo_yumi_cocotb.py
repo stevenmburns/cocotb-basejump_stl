@@ -32,8 +32,8 @@ async def run_test(dut):
     q = deque()
 
     for _ in range(1000):
-        p_v = r.uniform(0,1) < 0.8
-        p_y = r.uniform(0,1) < 0.9
+        p_v = r.uniform(0,1) < 0.2
+        p_y = r.uniform(0,1) < 0.2
 
         if p_v:
             dut.v_i.value = 1
@@ -43,27 +43,31 @@ async def run_test(dut):
             dut.v_i.value = 0
             dut.data_i.value = u
 
-        # Are these delta cycles needed ?
-        #await Timer(0.1, 'ns')
+        dut._log.info( f"BB: ({dut.v_i.value} {dut.data_i.value.integer} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value.integer} {dut.yumi_i.value}) {q}")
 
-        dut.yumi_i.value = 0
-        if p_y:
-            if dut.v_o.value == 1:
-                dut.yumi_i.value = 1
-                val_o = q.popleft()
-                print(f"Pop should be {val_o} was {dut.data_o.value}")
-                assert val_o == dut.data_o.value, (val_o, dut.data_o.value)
+        # Update delta cycles?
+        await Timer(0.01, 'ns')
 
-        if p_v:
-            if dut.ready_o.value ==  1:
-                print(f"Push {val}")
-                q.append( val)
+        if p_y and dut.v_o.value == 1:
+            dut.yumi_i.value = 1
+            val_o = q.popleft()
+            dut._log.info(f"Pop should be {val_o} was {dut.data_o.value.integer}")
+            assert val_o == dut.data_o.value, (val_o, dut.data_o.value.integer)
+        else:
+            dut.yumi_i.value = 0
 
-        # Are these delta cycles needed ?
-        #await Timer(0.1, 'ns')
+        # Update delta cycles?
+        await Timer(0.01, 'ns')
 
-        print( f"B: ({dut.v_i.value} {dut.data_i.value} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value} {dut.yumi_i.value}) {q}")
+        if p_v and dut.ready_o.value ==  1:
+            dut._log.info(f"Push {val}")
+            q.append( val)
+
+        # Update delta cycles?
+        await Timer(0.01, 'ns')
+
+        dut._log.info( f"B: ({dut.v_i.value} {dut.data_i.value.integer} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value.integer} {dut.yumi_i.value}) {q}")
 
         await FallingEdge(dut.clk_i)
 
-        print( f"A: ({dut.v_i.value} {dut.data_i.value} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value} {dut.yumi_i.value}) {q}")
+        dut._log.info( f"A: ({dut.v_i.value} {dut.data_i.value.integer} {dut.ready_o.value}) ({dut.v_o.value} {dut.data_o.value.integer} {dut.yumi_i.value}) {q}")
