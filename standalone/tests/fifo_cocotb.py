@@ -3,7 +3,7 @@
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import FallingEdge, Timer
+from cocotb.triggers import RisingEdge, FallingEdge, Timer, Combine, Join
 
 import random
 from collections import deque
@@ -34,26 +34,33 @@ async def test_fifo(dut):
 
     q = deque()
 
+    
+
     async def logical_step(g_i, g_o, value):
 
         dut._log.info(f"g_i={g_i} g_o={g_o} value={value}")
 
-        dut.io_inp_valid.value = 0
-        if g_i:
-            dut.io_inp_valid.value = 1; dut.io_inp_bits.value = value
-        dut.io_out_ready.value = 0
-        if g_o:
-           dut.io_out_ready.value = 1
+        dut.io_inp_valid.value = 1 if g_i else 0
+        dut.io_inp_bits.value = value
+        dut.io_out_ready.value = 1 if g_o else 0
 
-        await Timer(0.01, 'ns')
+        async def sample_out():
+            await RisingEdge(dut.clock)        
+            if dut.io_out_valid.value and dut.io_out_ready.value:
+                dut._log.info(f"dequeueing {q[0]}...")
+                assert q.popleft() == dut.io_out_bits.value
 
-        if dut.io_out_valid.value and g_o:
-            dut._log.info(f"dequeueing {q[0]}...")
-            assert q.popleft() == dut.io_out_bits.value
+        async def sample_inp():
+            await RisingEdge(dut.clock)        
+            if dut.io_inp_valid.value and dut.io_inp_ready.value:
+                dut._log.info(f"enqueueing {value}...")
+                q.append(value)
 
-        if g_i and dut.io_inp_ready.value:
-            dut._log.info(f"enqueueing {value}...")
-            q.append(value)
+
+        t0 = cocotb.start_soon(sample_inp())
+        t1 = cocotb.start_soon(sample_out())
+
+        await Combine(Join(t0), Join(t1))
 
         await FallingEdge(dut.clock)  # Synchronize with the clock
 
