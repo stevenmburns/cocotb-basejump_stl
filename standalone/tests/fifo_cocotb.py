@@ -35,26 +35,27 @@ async def test_fifo(dut):
     q = deque()
 
     
+    inp_index = 0
 
-    async def logical_step(g_i, g_o, value):
 
-        dut._log.info(f"g_i={g_i} g_o={g_o} value={value}")
-
-        dut.io_inp_valid.value = 1 if g_i else 0
-        dut.io_inp_bits.value = value
-        dut.io_out_ready.value = 1 if g_o else 0
+    async def logical_step(g_i, g_o):
 
         async def sample_out():
+            dut.io_out_ready.value = 1 if g_o else 0
             await RisingEdge(dut.clock)        
             if dut.io_out_valid.value and dut.io_out_ready.value:
                 dut._log.info(f"dequeueing {q[0]}...")
                 assert q.popleft() == dut.io_out_bits.value
 
         async def sample_inp():
+            nonlocal inp_index
+            dut.io_inp_valid.value = 1 if g_i else 0
+            dut.io_inp_bits.value = inp_index
             await RisingEdge(dut.clock)        
             if dut.io_inp_valid.value and dut.io_inp_ready.value:
-                dut._log.info(f"enqueueing {value}...")
-                q.append(value)
+                dut._log.info(f"enqueueing {inp_index}...")
+                q.append(inp_index)
+                inp_index += 1
 
 
         t0 = cocotb.start_soon(sample_inp())
@@ -64,13 +65,22 @@ async def test_fifo(dut):
 
         await FallingEdge(dut.clock)  # Synchronize with the clock
 
-    for i in range(1000):
+    if False:
+        for g_i, g_o in [(True, True),
+                         (False, True),
+                         (True, True)]:
+            dut._log.info(f"q = {q} g_i = {g_i} g_o = {g_o}")
+            await logical_step(g_i, g_o)
         dut._log.info(f"q = {q}")
 
 
-        g_i = rnd.uniform(0,1) < 0.8
-        g_o = rnd.uniform(0,1) < 0.8
+    if True:
+        for _ in range(1000):
+            g_i = rnd.uniform(0,1) < 0.85
+            g_o = rnd.uniform(0,1) < 0.85
 
-        await logical_step(g_i, g_o, i)
+            dut._log.info(f"q = {q} g_i = {g_i} g_o = {g_o}")
 
-    dut._log.info(f"q = {q}")
+            await logical_step(g_i, g_o)
+
+        dut._log.info(f"q = {q}")
