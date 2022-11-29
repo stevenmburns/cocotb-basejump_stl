@@ -22,8 +22,8 @@ git clone https://github.com/cocotb/cocotb
 git clone https://github.com/themperek/cocotb-test.git
 (cd cocotb-test; pip install -e .)
 
-git clone https://github.com/verilator/verilator.git
-(cd verilator; git checkout v4.106)
+git clone https://github.com/Eideticom/verilator.git
+(cd verilator; git checkout v5.002-vpi-callback-patch)
 mkdir verilator_install
 cd verilator
 autoconf

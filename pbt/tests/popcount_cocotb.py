@@ -14,10 +14,16 @@ async def run_test(dut):
     async def stage( i, o):
         dut.i.value = i
         await Timer(1.0, 'ns')
+        dut._log.info(f'input={dut.i.value}  got={dut.o.value.integer} expected={o}')
         assert int(dut.o.value) == o, (int(dut.o.value), o)
 
-    r = random.Random( 47)
-    m = 1000
-    for _ in range(m):
-        v = r.randrange( 1<<width_p)
-        await stage( v, popcount( width_p, v))
+    if False:
+        r = random.Random( 47)
+        m = 1000
+        for _ in range(m):
+            v = r.randrange( 1<<width_p)
+            await stage( v, popcount( width_p, v))
+
+    if True:
+        for i in range(1<<width_p):
+            await stage( i, popcount( width_p, i))

@@ -13,9 +13,8 @@ rootdir = pathlib.Path(__file__).parent.parent.parent
 def test_fifo( els_p):
     os.environ['els_p'] = f"{els_p}"
     width_p = 8
-    run(verilog_sources=[str(testdir / "fifo_toplevel.v"),
-                         str(rootdir / "basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v")],
-        toplevel="fifo_toplevel",
+    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_dataflow/bsg_fifo_1rw_large.v")],
+        toplevel="bsg_fifo_1rw_large",
         module="fifo_cocotb",
         includes=[str(rootdir / "basejump_stl/bsg_misc"),
                   str(rootdir / "basejump_stl/bsg_mem")],
