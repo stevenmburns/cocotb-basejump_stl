@@ -1,4 +1,4 @@
-module fifo_toplevel #(parameter width_p = 0
+module fifo_1rw_large_toplevel #(parameter width_p = 0
                      , parameter els_p = 0
 		     , parameter verbose_p = 0
                      )

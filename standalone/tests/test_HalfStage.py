@@ -7,6 +7,7 @@ def test_HalfStage():
     run(verilog_sources=[tests_dir / "HalfStage.v"],
         toplevel="HalfStage",
         module="fifo_cocotb",
+        compile_args=["-timescale=1ps/1ps"],
         waves=True)
 
 

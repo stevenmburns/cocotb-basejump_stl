@@ -7,6 +7,7 @@ def test_DecoupledStage():
     run(verilog_sources=[tests_dir / "DecoupledStage.v"],
         toplevel="DecoupledStage",
         module="fifo_cocotb",
+        compile_args=["-timescale=1ps/1ps"],
         waves=True)
 
 

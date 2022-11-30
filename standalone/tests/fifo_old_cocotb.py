@@ -20,8 +20,6 @@ async def test_fifo(dut):
     await FallingEdge(dut.clock)  # Synchronize with the clock
 
     dut.reset.value = 1
-
-
     dut.io_inp_valid.value = 0
     dut.io_inp_bits.value = 0
     dut.io_out_ready.value = 0
@@ -33,10 +31,7 @@ async def test_fifo(dut):
     await FallingEdge(dut.clock)  # Synchronize with the clock
 
     q = deque()
-
-    
     inp_index = 0
-
 
     async def logical_step(g_i, g_o):
         nonlocal inp_index
