@@ -1,6 +1,4 @@
 
-`timescale 1us/1us
-
 module AluMMX(
   input         clock,
   input         reset,
