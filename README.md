@@ -24,7 +24,6 @@ git clone https://github.com/themperek/cocotb-test.git
 
 git clone https://github.com/Eideticom/verilator.git
 (cd verilator; git checkout v5.002-vpi-callback-patch)
-(cd verilator; git checkout v5.002-vpi-callback-patch)
 mkdir verilator_install
 cd verilator
 autoconf

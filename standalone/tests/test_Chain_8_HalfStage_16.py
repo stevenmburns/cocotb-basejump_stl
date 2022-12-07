@@ -1,4 +1,4 @@
-from cocotb_test.simulator import run
+from util import run
 from pathlib import Path
 
 tests_dir = Path(__file__).parent
