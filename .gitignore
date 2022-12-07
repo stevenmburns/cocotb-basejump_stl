@@ -5,6 +5,13 @@ cocotb-test/
 cocotb/
 verilator/
 verilator_install/
+verilator_install-v4.106/
+verilator_install-v4.202/
+verilator_install-v4.220/
+verilator_install-v5.002/
+verilator_install-v5.002p/
 iverilog/
 iverilog_install/
+iverilog_install-v11_0/
 __pycache__/
+

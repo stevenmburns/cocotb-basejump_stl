@@ -9,10 +9,10 @@ rootdir = pathlib.Path(__file__).parent.parent.parent
 @given(st.integers(min_value=2,max_value=10))
 @example(8)
 def test_abs_verilog(width_p):
-    run(verilog_sources=[str(testdir / "abs_toplevel.v"),
-                         str(rootdir / "basejump_stl/bsg_misc/bsg_abs.v")],
+    print(f'Running with width_p={width_p}...')
+    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_misc/bsg_abs.v")],
         includes=[str(rootdir / "basejump_stl/bsg_misc")],
-        toplevel="abs_toplevel",
+        toplevel="bsg_abs",
         module="abs_cocotb",
         extra_args=["-Wno-fatal", f"-pvalue+width_p={width_p}"]
     )

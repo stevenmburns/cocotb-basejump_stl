@@ -13,6 +13,7 @@ pip install wheel
 pip install pytest
 pip install hypothesis
 
+# Add this instead the `cocotb-basejump_stl` directory
 git clone https://github.com/bespoke-silicon-group/basejump_stl.git
 
 git clone https://github.com/cocotb/cocotb
@@ -21,14 +22,16 @@ git clone https://github.com/cocotb/cocotb
 git clone https://github.com/themperek/cocotb-test.git
 (cd cocotb-test; pip install -e .)
 
-git clone https://github.com/verilator/verilator.git
-git checkout v4.106
+git clone https://github.com/Eideticom/verilator.git
+(cd verilator; git checkout v5.002-vpi-callback-patch)
+(cd verilator; git checkout v5.002-vpi-callback-patch)
 mkdir verilator_install
 cd verilator
 autoconf
 ./configure --prefix=`realpath ../verilator_install`
 make -j 8
 make install
+cd -
 ```
 Add `verilator_install/bin` to your PATH.
 
@@ -40,6 +43,7 @@ autoconf
 ./configure --prefix=`realpath ../iverilog_install`
 make -j 8
 make install
+cd -
 ```
 Add `iverilog_install/bin` to your PATH.
 
@@ -69,4 +73,69 @@ docker build . -f Dockerfile.base -t cocotb_base
 docker build . -t cocotb_image
 
 docker run -it cocotb_image bash -c "source /opt/venv/bin/activate && cd /pbt && SIM=verilator pytest"
+```
+
+## Other Verilator Versions
+
+```
+git clone https://github.com/Eideticom/verilator.git
+
+(cd verilator; git checkout v5.002-vpi-callback-patch)
+mkdir verilator_install-v5.002p
+cd verilator
+autoconf
+./configure --prefix=`realpath ../verilator_install-v5.002p`
+make -j 8
+make install
+cd -
+
+(cd verilator; git checkout v4.106)
+mkdir verilator_install-v4.106
+cd verilator
+autoconf
+./configure --prefix=`realpath ../verilator_install-v4.106`
+make -j 8
+make install
+cd -
+
+(cd verilator; git checkout v4.220)
+mkdir verilator_install-v4.220
+cd verilator
+autoconf
+./configure --prefix=`realpath ../verilator_install-v4.220`
+make -j 8
+make install
+cd -
+
+(cd verilator; git checkout v4.202)
+mkdir verilator_install-v4.202
+cd verilator
+autoconf
+./configure --prefix=`realpath ../verilator_install-v4.202`
+make -j 8
+make install
+cd -
+
+(cd verilator; git checkout v5.002)
+mkdir verilator_install-v5.002
+cd verilator
+autoconf
+./configure --prefix=`realpath ../verilator_install-v5.002`
+make -j 8
+make install
+cd -
+```
+
+## Other Icarus builds
+
+```
+git clone https://github.com/steveicarus/iverilog.git
+(cd iverilog; git checkout v11_0)
+mkdir iverilog_install-v11_0
+cd iverilog
+autoconf
+./configure --prefix=`realpath ../iverilog_install-v11_0`
+make -j 8
+make install
+cd -
 ```

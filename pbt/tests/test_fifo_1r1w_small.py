@@ -10,10 +10,9 @@ rootdir = pathlib.Path(__file__).parent.parent.parent
 @example(2)
 def test_fifo( els_p):
     width_p = 8
-    run(verilog_sources=[str(testdir / "fifo_1r1w_small_toplevel.v"),
-                         str(rootdir / "basejump_stl/bsg_misc/bsg_defines.v"),
+    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_misc/bsg_defines.v"),
                          str(rootdir / "basejump_stl/bsg_dataflow/bsg_fifo_1r1w_small.v")],
-        toplevel="fifo_1r1w_small_toplevel",
+        toplevel="bsg_fifo_1r1w_small",
         module="fifo_yumi_cocotb",
         includes=[str(rootdir / "basejump_stl/bsg_misc"),
                   str(rootdir / "basejump_stl/bsg_mem"),
