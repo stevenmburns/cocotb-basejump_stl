@@ -7,13 +7,17 @@ def run(**kwargs):
     sim = os.environ.get('SIM')
 
     extra_args = []
-    if sim is not None and sim == "vcs":
-        extra_args = ["-timescale=1ps/1ps"]
+    if sim is None:
+        pass
+    elif sim == "vcs":
+        extra_args.append("-timescale=1ps/1ps")
+    elif sim == "verilator":
+        extra_args.extend(["--trace", "--trace-structs"])
 
-    if 'extra_args' in kwargs:
-        kwargs['extra_args'] += extra_args
-    else:
-        kwargs['extra_args'] = extra_args
+    if 'extra_args' not in kwargs:
+        kwargs['extra_args'] = []
+
+    kwargs['extra_args'] += extra_args
 
     print(kwargs)
 
