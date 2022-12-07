@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in DecoupledStage MooreStage HalfStage BlockedStage Chain_8_DecoupledStage_16 Chain_8_MooreStage_16 Chain_8_HalfStage_16 Chain_8_BlockedStage_16
+do
+  cocotb-clean
+  SIM=verilator pytest -vv tests/test_${i}.py -o log_cli=1
+  mv sim_build/__json results/${i}.json
+done
