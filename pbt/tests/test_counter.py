@@ -14,10 +14,9 @@ def test_counter(val):
     max_val_p = val
     max_step_p = 1
     init_val_p = 0
-    run(verilog_sources=[str(testdir / "counter_up_down_toplevel.v"),
-                         str(rootdir / "basejump_stl/bsg_misc/bsg_counter_up_down.v")],
+    run(verilog_sources=[str(rootdir / "basejump_stl/bsg_misc/bsg_counter_up_down.v")],
         includes=[str(rootdir / "basejump_stl/bsg_misc")],
-        toplevel="counter_up_down_toplevel",
+        toplevel="bsg_counter_up_down",
         module="counter_cocotb",
         extra_args=["-Wno-fatal",
                     f"-pvalue+max_val_p={max_val_p}",

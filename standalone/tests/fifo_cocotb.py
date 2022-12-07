@@ -32,13 +32,24 @@ async def test_fifo(dut):
 
     await FallingEdge(dut.clock)  # Synchronize with the clock
 
+
+    def gen_examples():
+        for _ in range(1000):
+            g_i = rnd.uniform(0,1) < 0.85
+            g_o = rnd.uniform(0,1) < 0.85
+            yield g_i, g_o
+
+    examples = [(True, True),
+                (False, True),
+                (True, True)]
+
+    examples = gen_examples()
+
     q = deque()
-
-    
     inp_index = 0
+    for g_i, g_o in examples:
+        dut._log.info(f"q = {q} g_i = {g_i} g_o = {g_o}")
 
-
-    async def logical_step(g_i, g_o):
 
         async def sample_out():
             dut.io_out_ready.value = 1 if g_o else 0
@@ -46,6 +57,8 @@ async def test_fifo(dut):
             if dut.io_out_valid.value and dut.io_out_ready.value:
                 dut._log.info(f"dequeueing {q[0]}...")
                 assert q.popleft() == dut.io_out_bits.value
+
+            await FallingEdge(dut.clock)  # Synchronize with the clock
 
         async def sample_inp():
             nonlocal inp_index
@@ -57,30 +70,14 @@ async def test_fifo(dut):
                 q.append(inp_index)
                 inp_index += 1
 
+            await FallingEdge(dut.clock)  # Synchronize with the clock
 
         t0 = cocotb.start_soon(sample_inp())
         t1 = cocotb.start_soon(sample_out())
 
         await Combine(Join(t0), Join(t1))
 
-        await FallingEdge(dut.clock)  # Synchronize with the clock
 
-    if False:
-        for g_i, g_o in [(True, True),
-                         (False, True),
-                         (True, True)]:
-            dut._log.info(f"q = {q} g_i = {g_i} g_o = {g_o}")
-            await logical_step(g_i, g_o)
-        dut._log.info(f"q = {q}")
+    dut._log.info(f"q = {q}")
 
 
-    if True:
-        for _ in range(1000):
-            g_i = rnd.uniform(0,1) < 0.85
-            g_o = rnd.uniform(0,1) < 0.85
-
-            dut._log.info(f"q = {q} g_i = {g_i} g_o = {g_o}")
-
-            await logical_step(g_i, g_o)
-
-        dut._log.info(f"q = {q}")

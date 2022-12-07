@@ -9,7 +9,7 @@ from cocotb.triggers import FallingEdge
 @cocotb.test()
 async def test_AluMMX_simple(dut):
 
-    clock = Clock(dut.clock, 10, units="us")  # Create a 10us period clock on port clk
+    clock = Clock(dut.clock, 1, units="ns")  # Create a 10us period clock on port clk
     cocotb.start_soon(clock.start())  # Start the clock
 
     await FallingEdge(dut.clock)  # Synchronize with the clock

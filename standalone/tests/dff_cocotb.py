@@ -9,7 +9,7 @@ from cocotb.triggers import FallingEdge
 async def test_dff(dut):
     """ Test that d propagates to q """
 
-    clock = Clock(dut.clk, 10, units="us")  # Create a 10us period clock on port clk
+    clock = Clock(dut.clk, 1, units="ns")  # Create a 10us period clock on port clk
     cocotb.start_soon(clock.start())  # Start the clock
 
     dut.reset.value = 1
