@@ -13,6 +13,7 @@ pip install wheel
 pip install pytest
 pip install hypothesis
 
+# Add this instead the `cocotb-basejump_stl` directory
 git clone https://github.com/bespoke-silicon-group/basejump_stl.git
 
 git clone https://github.com/cocotb/cocotb
@@ -21,14 +22,15 @@ git clone https://github.com/cocotb/cocotb
 git clone https://github.com/themperek/cocotb-test.git
 (cd cocotb-test; pip install -e .)
 
-git clone https://github.com/verilator/verilator.git
-git checkout v4.106
+git clone https://github.com/Eideticom/verilator.git
+(cd verilator; git checkout v5.002-vpi-callback-patch)
 mkdir verilator_install
 cd verilator
 autoconf
 ./configure --prefix=`realpath ../verilator_install`
 make -j 8
 make install
+cd -
 ```
 Add `verilator_install/bin` to your PATH.
 
@@ -40,6 +42,7 @@ autoconf
 ./configure --prefix=`realpath ../iverilog_install`
 make -j 8
 make install
+cd -
 ```
 Add `iverilog_install/bin` to your PATH.
 

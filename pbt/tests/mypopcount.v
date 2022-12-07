@@ -1,4 +1,3 @@
-
 module mypopcount #(parameter width_p="inv")
         ( input logic [width_p-1:0] i,
           output logic [$clog2(width_p+1)-1:0] o);
